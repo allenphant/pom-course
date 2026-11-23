@@ -207,13 +207,16 @@ ul.ideas small{color:var(--muted);font-size:calc(var(--u)*1.1);}
 .btn{font:700 calc(var(--u)*1.3) var(--sans);background:var(--accent);color:#fff;border:0;padding:calc(var(--u)*0.8) calc(var(--u)*1.8);cursor:pointer;}
 .btn.ghost{background:transparent;color:var(--accent-dark);border:1px solid var(--line);}
 /* chrome */
-.stage-foot{position:absolute;left:0;right:0;bottom:0;height:calc(var(--u)*3.4);display:flex;align-items:center;justify-content:space-between;padding:0 calc(var(--u)*2.2);font-size:calc(var(--u)*1.1);color:var(--muted);pointer-events:none;}
+.stage-foot{position:absolute;left:0;right:0;bottom:0;height:calc(var(--u)*3.4);display:flex;align-items:center;justify-content:space-between;padding:0 calc(var(--u)*2.2);font-size:calc(var(--u)*1.1);color:var(--muted);pointer-events:none;background:var(--bg-deep);border-top:1px solid var(--line-light);}
 html.no-js .stage-foot{display:none;}
 .foot-tools{display:flex;gap:calc(var(--u)*1);pointer-events:auto;}
 .tool{background:none;border:none;padding:calc(var(--u)*0.3);cursor:pointer;color:var(--muted);line-height:0;}
 .tool:hover,.tool:focus-visible{color:var(--accent);}.tool svg{width:calc(var(--u)*1.9);height:calc(var(--u)*1.9);}
-.phases{display:flex;gap:calc(var(--u)*0.5);}.phases span{padding:calc(var(--u)*0.25) calc(var(--u)*1.1);border-top:3px solid var(--line-light);font-size:calc(var(--u)*1.1);color:var(--muted);}.phases span.on{border-top-color:var(--accent);color:var(--accent-dark);font-weight:700;background:var(--bg-raised);}.phases span.done{border-top-color:var(--accent);opacity:.6;}
-.progress{position:absolute;left:0;bottom:0;height:calc(var(--u)*0.28);background:var(--accent);transition:width .3s ease;}
+.pbar{display:flex;flex:1;align-self:stretch;margin:0 calc(var(--u)*1.5);}
+.pbar span{--f:0%;flex:1;display:flex;align-items:center;justify-content:center;font-size:calc(var(--u)*1.2);color:var(--muted);border-left:1px solid var(--line-light);background:linear-gradient(to right,rgba(180,95,60,.28) var(--f),transparent var(--f));box-shadow:inset 0 calc(var(--u)*-0.3) 0 transparent;position:relative;transition:background .3s ease;}
+.pbar span::after{content:"";position:absolute;left:0;right:0;bottom:0;height:calc(var(--u)*0.3);background:linear-gradient(to right,var(--accent) var(--f),transparent var(--f));}
+.pbar span:last-child{border-right:1px solid var(--line-light);}
+.pbar span.on{color:var(--accent-dark);font-weight:700;}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 .overlay{position:absolute;inset:0;z-index:40;background:var(--bg);padding:calc(var(--u)*4);overflow-y:auto;}
 .ov-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(var(--u)*1.2);}
@@ -306,10 +309,9 @@ Find rows like this, and add a way to leave them out. Show me the counts per key
       <button class="tool" id="btn-overview" aria-label="Overview (O)" title="Overview O"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></button>
       <button class="tool" id="btn-laser" aria-label="Laser pointer (L)" title="Laser L"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
     </div>
-    <div class="phases" id="phases"><span>1 Taiwan CDC POM</span><span>2 Connect</span><span>3 Mini POM</span><span>4 Bonus</span><span>5 Share</span></div>
+    <div class="pbar" id="phases"><span>1 Taiwan CDC POM</span><span>2 Connect</span><span>3 Mini POM</span><span>4 Bonus</span><span>5 Share</span></div>
     <span id="foot-num">01 / 38</span>
   </div>
-  <div class="progress" id="progress-bar"></div>
 
   <div class="overlay" id="overview" hidden><p class="eyebrow">Overview (O or Esc to close)</p><div class="ov-grid" id="ov-grid"></div></div>
 
@@ -375,9 +377,13 @@ setInterval(function(){
 function render(){
   SCENES.forEach(function(s, i){ document.getElementById(s.id).classList.toggle("is-active", i === idx); });
   document.getElementById("foot-num").textContent = SCENES[idx].n + " / " + SCENES.length;
-  document.getElementById("progress-bar").style.width = ((idx + 1) / SCENES.length * 100) + "%";
   var ph = SCENES[idx].ph, pe = document.getElementById("phases").children;
-  for(var k = 0; k < pe.length; k++){ pe[k].className = (k + 1 === ph) ? "on" : ((ph && k + 1 < ph) ? "done" : ""); }
+  for(var k = 0; k < pe.length; k++){
+    var tot = 0, seen = 0;
+    SCENES.forEach(function(x, i){ if(x.ph === k + 1){ tot++; if(i <= idx) seen++; } });
+    pe[k].style.setProperty("--f", (tot ? seen / tot * 100 : 0) + "%");
+    pe[k].className = (k + 1 === ph) ? "on" : "";
+  }
   if(location.hash.slice(1) !== SCENES[idx].id){ history.replaceState(null, "", "#" + SCENES[idx].id); }
   updatePresenter();
 }
