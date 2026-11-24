@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>document.documentElement.className = "js";</script>
 <title>Build your own POM</title>
 <style>
 :root{
@@ -25,7 +26,7 @@ html.no-js body{overflow:auto;background:var(--bg);}
   box-shadow:0 calc(var(--u)*0.6) calc(var(--u)*2.4) color-mix(in srgb,var(--ink) 18%,transparent);}
 html.no-js .stage{width:100%;height:auto;box-shadow:none;}
 .scene{position:absolute;inset:0;overflow:hidden;padding:calc(var(--u)*3.4) calc(var(--u)*5) calc(var(--u)*4.4);display:flex;flex-direction:column;}
-html.js .scene{display:none;}html.js .scene.is-active{display:flex;}
+html.js .scene{display:none;}html.js .scene.is-active{display:flex;}html.js:not(.ready) #scene-01-title{display:flex;}
 html.no-js .scene{position:static;border-bottom:1px solid var(--line-light);min-height:calc(var(--u)*56.25);}
 /* inline term chip (like Notion inline code): used for <i> and <code> */
 code,i:not([class]){font:normal 0.86em var(--mono);color:var(--accent-dark);background:rgba(180,95,60,.13);border-radius:calc(var(--u)*0.4);padding:0.08em 0.45em;margin:0 0.05em;}
@@ -409,7 +410,7 @@ Find rows like this, and add a way to leave them out. Show me the counts per key
 <div id="laser"></div>
 
 <script>
-document.documentElement.className = "js";
+document.documentElement.className = "js ready";
 var SCENES = [{"id": "scene-01-title", "ph": 0, "n": "01", "t": "Build your own POM", "ready": 1}, {"id": "scene-08-plan", "ph": 0, "n": "02", "t": "Today's flow", "ready": 1}, {"id": "scene-08-pom-gates", "ph": 1, "n": "03", "t": "From frame to dashboard: three parts", "ready": 1}, {"id": "scene-27-pom-phase-a", "ph": 1, "n": "04", "t": "Phase A: every frame", "ready": 1}, {"id": "scene-28-pom-phase-b", "ph": 1, "n": "05", "t": "Phase B: the AI patrol", "ready": 1}, {"id": "scene-34-pom-phase-c", "ph": 1, "n": "06", "t": "Phase C: people in charge", "ready": 1}, {"id": "scene-03-pom-dashboard", "ph": 1, "n": "07", "t": "The dashboard", "ready": 1}, {"id": "scene-04-pom-evidence", "ph": 1, "n": "08", "t": "Click a word, see the frames", "ready": 1}, {"id": "scene-05-pom-heatmap", "ph": 1, "n": "09", "t": "The rhythm of a keyword", "ready": 1}, {"id": "scene-06-pom-live", "ph": 1, "n": "10", "t": "Watch it read, live", "ready": 1}, {"id": "scene-07-pom-demo", "ph": 1, "n": "11", "t": "Watch the live demo", "ready": 1}, {"id": "scene-35-seats", "ph": 2, "n": "12", "t": "Seats: one driver per team", "ready": 1}, {"id": "scene-16-link-tab", "ph": 2, "n": "13", "t": "Open the Claude app and start a session", "ready": 1}, {"id": "scene-13-claude-code", "ph": 2, "n": "14", "t": "Two small settings for Claude", "ready": 1}, {"id": "scene-13-tools", "ph": 2, "n": "15", "t": "Let Claude set up the rest", "ready": 1}, {"id": "scene-29-colab", "ph": 2, "n": "16", "t": "What is Google Colab?", "ready": 1}, {"id": "scene-09-folder-notebook", "ph": 2, "n": "17", "t": "Open the course folder and the notebook", "ready": 1}, {"id": "scene-09c-save-copy", "ph": 2, "n": "18", "t": "Save your own copy first", "ready": 1}, {"id": "scene-16a-open", "ph": 2, "n": "19", "t": "Ask Claude to open the connection", "ready": 1}, {"id": "scene-16b-token", "ph": 2, "n": "20", "t": "Copy the token", "ready": 1}, {"id": "scene-16d-palette", "ph": 2, "n": "21", "t": "Open the command palette in your notebook tab", "ready": 1}, {"id": "scene-16c-paste", "ph": 2, "n": "22", "t": "Paste the token and connect", "ready": 1}, {"id": "scene-09-bridge", "ph": 2, "n": "23", "t": "Same idea, small enough to build today", "ready": 1}, {"id": "scene-12-run-notebook", "ph": 3, "n": "24", "t": "Run the notebook: two ways", "ready": 1}, {"id": "scene-30-videos", "ph": 3, "n": "25", "t": "The videos you will read", "ready": 1}, {"id": "scene-03-pipeline", "ph": 3, "n": "26", "t": "Eight steps from video to dashboard", "ready": 1}, {"id": "scene-04-two-bands", "ph": 3, "n": "27", "t": "Find the two bands", "ready": 1}, {"id": "scene-05-ocr-skip", "ph": 3, "n": "28", "t": "Read the text, skip repeats", "ready": 1}, {"id": "scene-06-gate-rows", "ph": 3, "n": "29", "t": "Keep only health words", "ready": 1}, {"id": "scene-07-result", "ph": 3, "n": "30", "t": "What you get", "ready": 1}, {"id": "scene-24-half-finished", "ph": 4, "n": "31", "t": "What you lit up, and what is still dark", "ready": 1}, {"id": "scene-22-bonus", "ph": 4, "n": "32", "t": "Bonus: four directions, many small challenges", "ready": 1}, {"id": "scene-23-bonus-how", "ph": 4, "n": "33", "t": "How the 30 minutes work, and how you share", "ready": 1}, {"id": "scene-31-demo", "ph": 4, "n": "34", "t": "Demo: stop the false WHO hits", "ready": 1}, {"id": "scene-32-ai-demo", "ph": 4, "n": "35", "t": "Demo: an AI second opinion", "ready": 1}, {"id": "scene-33-apikey", "ph": 4, "n": "36", "t": "Get your own Gemini API key", "ready": 1}, {"id": "scene-20-kit-start", "ph": 0, "n": "37", "t": "Backup: download the kit", "ready": 1}];
 
 var stage = document.getElementById("stage");
